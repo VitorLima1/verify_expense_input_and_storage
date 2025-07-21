@@ -159,7 +159,6 @@
             updateTotal();
         }
 
-        // NOVA FUNÇÃO: removeExpense
         function removeExpense(idToRemove) {
             // Filtra o array, mantendo apenas os gastos cujo ID não seja o que queremos remover
             expenses = expenses.filter(expense => expense.id !== idToRemove);
@@ -180,7 +179,7 @@
                 return;
             }
 
-            expenses.forEach((expense) => { // Removido 'index' pois usaremos o 'id'
+            expenses.forEach((expense) => {
                 const expenseItem = document.createElement('div');
                 expenseItem.classList.add('expense-item');
                 
