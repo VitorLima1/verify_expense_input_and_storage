@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Gastos Simples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px; /* Adicionado para espaçar do input */
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .expense-list {
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Alinha verticalmente */
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .expense-item:last-child {
+            border-bottom: none;
+        }
+        .expense-item button { /* Estilo específico para o botão de exclusão */
+            background-color: #dc3545; /* Cor vermelha para exclusão */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em; /* Menor que o botão principal */
+            width: auto; /* Não ocupa 100% da largura */
+        }
+        .expense-item button:hover {
+            background-color: #c82333;
+        }
+        .total-display {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análise de Gastos</h1>
+
+        <div class="input-group">
+            <label for="description">Descrição:</label>
+            <input type="text" id="description" placeholder="Ex: Almoço, Supermercado" required>
+        </div>
+
+        <div class="input-group">
+            <label for="amount">Valor (R$):</label>
+            <input type="number" id="amount" step="0.01" placeholder="Ex: 50.00" required>
+        </div>
+
+        <button onclick="addExpense()">Adicionar Gasto</button>
+
+        <div class="expense-list" id="expenseList">
+            <h2>Meus Gastos</h2>
+            </div>
+
+        <div class="total-display">
+            Total Gasto: R$ <span id="totalAmount">0.00</span>
+        </div>
+    </div>
+
+    <script>
+        let expenses = []; // Array para armazenar os gastos
+
+        function loadExpenses() {
+            const storedExpenses = localStorage.getItem('myExpensesApp');
+            if (storedExpenses) {
+                expenses = JSON.parse(storedExpenses);
+            }
+            renderExpenses();
+            updateTotal();
+        }
+
+        function saveExpenses() {
+            localStorage.setItem('myExpensesApp', JSON.stringify(expenses));
+        }
+
+        function addExpense() {
+            const descriptionInput = document.getElementById('description');
+            const amountInput = document.getElementById('amount');
+            
+            const description = descriptionInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+
+            if (description === '' || isNaN(amount) || amount <= 0) {
+                alert('Por favor, insira uma descrição válida e um valor positivo.');
+                return;
+            }
+
+            // Gerar um ID único para cada gasto
+            // Usamos Date.now() para simplicidade, mas em apps maiores, geradores de UUID são melhores
+            expenses.push({ 
+                id: Date.now(), // ID único
+                description: description, 
+                amount: amount 
+            });
+
+            descriptionInput.value = '';
+            amountInput.value = '';
+
+            saveExpenses();
+            renderExpenses();
+            updateTotal();
+        }
+
+        // NOVA FUNÇÃO: removeExpense
+        function removeExpense(idToRemove) {
+            // Filtra o array, mantendo apenas os gastos cujo ID não seja o que queremos remover
+            expenses = expenses.filter(expense => expense.id !== idToRemove);
+            
+            saveExpenses();     // Salva os dados atualizados
+            renderExpenses();   // Renderiza a lista novamente
+            updateTotal();      // Atualiza o total
+        }
+
+        function renderExpenses() {
+            const expenseListDiv = document.getElementById('expenseList');
+            expenseListDiv.innerHTML = '<h2>Meus Gastos</h2>'; 
+
+            if (expenses.length === 0) {
+                const noExpenses = document.createElement('p');
+                noExpenses.textContent = 'Nenhum gasto registrado ainda.';
+                expenseListDiv.appendChild(noExpenses);
+                return;
+            }
+
+            expenses.forEach((expense) => { // Removido 'index' pois usaremos o 'id'
+                const expenseItem = document.createElement('div');
+                expenseItem.classList.add('expense-item');
+                
+                expenseItem.innerHTML = `
+                    <span>${expense.description}</span>
+                    <span>R$ ${expense.amount.toFixed(2)}</span>
+                    <button onclick="removeExpense(${expense.id})">Remover</button>
+                `;
+                expenseListDiv.appendChild(expenseItem);
+            });
+        }
+
+        function updateTotal() {
+            const totalAmountSpan = document.getElementById('totalAmount');
+            const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            totalAmountSpan.textContent = total.toFixed(2);
+        }
+
+        window.onload = loadExpenses;
+    </script>
+</body>
+</html>
