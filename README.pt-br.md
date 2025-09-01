@@ -1,41 +1,41 @@
-# verify_expense_input_and_storage
+# verify_expense_input_and_storage 
 
-> ⚠️ **Under Development**
-> This project is still a prototype and is under construction.
-> Features may change or be unstable.
-
----
-
-A simple web application for managing personal expenses.
+> ⚠️ **Em Desenvolvimento**
+> Este projeto ainda é um protótipo e está em fase de construção.
+> Funcionalidades podem mudar ou apresentar instabilidade.
 
 ---
 
-## Features
-
-* List and view expenses.
-* Add new expenses with a description and amount.
-* Remove existing expenses.
-* View an expense report for the last 30 days.
+Uma aplicação web simples para gerenciar gastos pessoais.
 
 ---
 
-## Technologies Used
+## Funcionalidades
 
-* **HTML:** Page structure.
-* **CSS:** Styling and layout.
-* **JavaScript:** Application logic.
-* **LocalStorage:** Data storage in the browser.
+* Listar e visualizar gastos.
+* Adicionar novos gastos com descrição e valor.
+* Remover gastos existentes.
+* Visualizar um relatório de gastos dos últimos 30 dias.
 
 ---
 
-## How to Run the Project
+## Tecnologias Utilizadas
 
-Follow these steps to get a copy of the project on your machine.
+* **HTML:** Estrutura da página.
+* **CSS:** Estilização e layout.
+* **JavaScript:** Lógica da aplicação.
+* **LocalStorage:** Armazenamento de dados no navegador.
 
-1.  Clone this repository to your local machine.
+---
+
+## Como Rodar o Projeto
+
+Siga estes passos para ter uma cópia do projeto em sua máquina.
+
+1.  Clone este repositório para sua máquina local.
     ```bash
-    git clone [Repository Link]
+    git clone [Link repositório]
     ```
 
-2.  Navigate to the project folder and open the `web-teste.html` file in your browser.
-    *Tip: You can simply drag and drop the .html file into your browser window.*
+2.  Navegue até a pasta do projeto e abra o arquivo `web-teste.html` no seu navegador.
+    *Dica: Você pode simplesmente arrastar o arquivo .html para a janela do navegador.*
