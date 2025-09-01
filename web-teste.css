@@ -1,0 +1,189 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.page-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Estilos do painel lateral --- */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: width 0.3s ease; /* Transição suave para a largura */
+    position: relative;
+    overflow-x: hidden; /* Garante que o conteúdo que transborda seja cortado */
+}
+
+    /* NOVO: Estilos para o painel minimizado */
+    .sidebar.minimized {
+        width: 60px; /* Largura menor quando minimizado */
+    }
+
+.sidebar-header {
+    display: flex;
+    justify-content: flex-end; /* Alinha o botão à direita */
+    padding: 10px;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu-item a {
+    display: flex; /* Permite alinhar ícone e texto */
+    align-items: center;
+    padding: 15px;
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 1.1em;
+    white-space: nowrap; /* Impede a quebra de linha do texto */
+    overflow: hidden; /* Esconde o texto que transborda */
+    transition: padding 0.3s ease, background-color 0.3s ease;
+}
+
+/* Oculta o texto com uma transição suave quando o painel minimiza */
+.sidebar.minimized .sidebar-menu-item a span {
+    width: 0; /* NOVO: Remove a largura */
+    margin-left: 0; /* NOVO: Remove a margem */
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar-menu-item a span {
+    margin-left: 10px;
+    opacity: 1; /* Texto visível */
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.minimized .sidebar-menu-item a span {
+    opacity: 0; /* Esconde o texto */
+    pointer-events: none; /* Impede que o texto escondido seja clicável */
+}
+
+/* Quando o painel estiver minimizado, a lista de menu some completamente */
+.sidebar.minimized .sidebar-menu {
+    display: none;
+}
+
+.sidebar-menu-item a:hover {
+    background-color: #34495e;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease; /* Transição suave para a margem */
+}
+
+    /* NOVO: Ajusta a margem do conteúdo quando o painel está minimizado */
+    .content.minimized {
+        margin-left: 60px;
+    }
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #0056b3;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .input-group input[type="text"],
+    .input-group input[type="number"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.expense-list {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.expense-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+    .expense-item:last-child {
+        border-bottom: none;
+    }
+
+    .expense-item button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8em;
+        width: auto;
+    }
+
+        .expense-item button:hover {
+            background-color: #c82333;
+        }
+
+.total-display {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #28a745;
+}
