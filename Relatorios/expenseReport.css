@@ -1,220 +1,273 @@
-﻿.report-day {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    padding: 10px;
+﻿/* -- Variaveis de Cores -- */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --border-color: #e2e6ea;
+    --text-color: #343a40;
+    --light-text-color: #a0a0a0;
 }
 
-    .report-day h3 {
-        margin: 0 0 10px 0;
-        color: #007bff;
-    }
-
-.report-day-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9em;
-    padding: 5px 0;
-    border-bottom: 1px dashed #eee;
-}
-
-    .report-day-item:last-child {
-        border-bottom: none;
-    }
-
-.report-day-total {
-    text-align: right;
-    font-weight: bold;
-    color: #28a745;
-    margin-top: 10px;
-}
+/* -- Estilos Globais -- */
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
+.hidden {
+    display: none !important;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* -- Layout Geral -- */
 .page-container {
     display: flex;
     min-height: 100vh;
 }
 
-/* --- Estilos do painel lateral --- */
-.sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    color: #ecf0f1;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    transition: width 0.3s ease; /* Transição suave para a largura */
-    position: relative;
-    overflow-x: hidden; /* Garante que o conteúdo que transborda seja cortado */
+.content {
+    flex-grow: 1;
+    padding: 2rem;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
 }
 
-    /* NOVO: Estilos para o painel minimizado */
-    .sidebar.minimized {
-        width: 60px; /* Largura menor quando minimizado */
-    }
+.content.minimized {
+    margin-left: 60px;
+}
+
+/* -- Sidebar -- */
+.sidebar {
+    width: 250px;
+    background-color: var(--surface-color);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.sidebar.minimized {
+    width: 60px;
+}
 
 .sidebar-header {
     display: flex;
-    justify-content: flex-end; /* Alinha o botão à direita */
-    padding: 10px;
+    justify-content: flex-end;
+    padding: 0.5rem 1rem;
 }
 
 .toggle-btn {
-    background: none;
+    background-color: transparent;
     border: none;
-    color: #ecf0f1;
-    font-size: 24px;
+    font-size: 1.5rem;
     cursor: pointer;
+    color: var(--text-color);
 }
 
 .sidebar-menu {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 1rem 0;
 }
 
 .sidebar-menu-item a {
-    display: flex; /* Permite alinhar ícone e texto */
-    align-items: center;
-    padding: 15px;
+    display: block;
+    padding: 1rem;
     text-decoration: none;
-    color: #ecf0f1;
-    font-size: 1.1em;
-    white-space: nowrap; /* Impede a quebra de linha do texto */
-    overflow: hidden; /* Esconde o texto que transborda */
-    transition: padding 0.3s ease, background-color 0.3s ease;
-}
-
-/* Oculta o texto com uma transição suave quando o painel minimiza */
-.sidebar.minimized .sidebar-menu-item a span {
-    width: 0; /* NOVO: Remove a largura */
-    margin-left: 0; /* NOVO: Remove a margem */
-    opacity: 0;
-    transition: width 0.3s ease, opacity 0.3s ease;
-}
-
-.sidebar-menu-item a span {
-    margin-left: 10px;
-    opacity: 1; /* Texto visível */
-    transition: opacity 0.3s ease;
-}
-
-.sidebar.minimized .sidebar-menu-item a span {
-    opacity: 0; /* Esconde o texto */
-    pointer-events: none; /* Impede que o texto escondido seja clicável */
-}
-
-/* Quando o painel estiver minimizado, a lista de menu some completamente */
-.sidebar.minimized .sidebar-menu {
-    display: none;
+    color: var(--text-color);
+    transition: background-color 0.2s ease, opacity 0.3s ease;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .sidebar-menu-item a:hover {
-    background-color: #34495e;
+    background-color: var(--border-color);
 }
 
-.content {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    transition: margin-left 0.3s ease; /* Transição suave para a margem */
+.sidebar.minimized .sidebar-menu-item a {
+    opacity: 0;
+    width: 0;
+    padding: 0;
 }
 
-    /* NOVO: Ajusta a margem do conteúdo quando o painel está minimizado */
-    .content.minimized {
-        margin-left: 60px;
-    }
-
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
+.sidebar.minimized .sidebar-menu-item {
     text-align: center;
-    color: #0056b3;
 }
 
+/* -- Conteúdo da Página -- */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* -- Seção de Busca (para a página de Relatórios) -- */
+.search-section {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+#searchInput {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+#searchButton {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+#searchButton:hover {
+    background-color: #0056b3;
+}
+
+/* -- Formulário de Adicionar Gastos (para a página de Análise) -- */
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
-    .input-group label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
 
-    .input-group input[type="text"],
-    .input-group input[type="number"] {
-        width: calc(100% - 22px);
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
-    }
+.input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
 
 button {
-    background-color: #007bff;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
     color: white;
-    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-    margin-top: 10px;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
 }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+button:hover {
+    background-color: #0056b3;
+}
 
+/* -- Lista de Gastos -- */
 .expense-list {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 15px;
+    margin-top: 2rem;
+}
+
+.expense-list h2 {
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
 }
 
 .expense-item {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px dashed #eee;
 }
 
-    .expense-item:last-child {
-        border-bottom: none;
-    }
+.expense-item p {
+    margin: 0;
+}
 
-    .expense-item button {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.8em;
-        width: auto;
-    }
+.expense-item .remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
 
-        .expense-item button:hover {
-            background-color: #c82333;
-        }
+.expense-item .remove-btn:hover {
+    background-color: #c82333;
+}
 
+/* -- Total de Gastos -- */
 .total-display {
-    text-align: right;
-    margin-top: 20px;
-    font-size: 1.2em;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--border-color);
+    font-size: 1.25rem;
     font-weight: bold;
-    color: #28a745;
+    text-align: right;
+    color: var(--primary-color);
+}
+
+/* -- Responsividade -- */
+@media (max-width: 768px) {
+    .page-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem;
+        position: static;
+    }
+
+    .sidebar.minimized {
+        width: 100%;
+    }
+
+    .sidebar-header {
+        padding: 0;
+    }
+
+    .sidebar-menu {
+        display: none;
+    }
+
+    .content {
+        margin-left: 0;
+    }
 }

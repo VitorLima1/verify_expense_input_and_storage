@@ -152,5 +152,6 @@ function showPage(pageId) {
     document.getElementById(pageId + '-page').classList.remove('hidden');
 }
 
+
 // Inicia a aplicação carregando os gastos do backend
 fetchExpensesAndRender();

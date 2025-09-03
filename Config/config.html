@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Gastos</title>
+    <link rel="stylesheet" href="..\Config\config.css">
+    </head>
+<body>
+
+    <div class="page-container">
+
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    &laquo;
+                </button>
+            </div>
+            <nav>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item"><a href="#" onclick="showPage('home')">Tela Inicial</a></li>
+                    <li class="sidebar-menu-item"><a href="..\Form\web-teste.html" >Análise de Gastos</a></li>
+                    <li class="sidebar-menu-item"><a href="..\Relatorios\expenseReport.html">Relatórios</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content" id="mainContent">
+            <div id="settings-page" class="page-content">
+                <div class="container">
+                    <h1>Configurações</h1>
+                    <div class="setting-item">
+                        <p>Modo Noturno:</p>
+                        <label class="switch">
+                            <input type="checkbox" id="themeToggleCheckbox" onclick="initializeThemeToggle()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <button id="saveSettingsBtn">Salvar Alterações</button>
+                </div>
+            </div>            
+        </main>
+    </div>
+
+    <script src="..\Config\config.js"></script>
+
+</body>
+</html>

@@ -8,38 +8,50 @@
 </head>
 <body>
 
-     <div class="page-container">
+    <div class="page-container">
 
-     <aside class="sidebar" id="sidebar">
-         <div class="sidebar-header">
-             <button class="toggle-btn" onclick="toggleSidebar()">
-                 &laquo;
-             </button>
-         </div>
-         <nav>
-             <ul class="sidebar-menu">
-                 <li class="sidebar-menu-item"><a href="#" onclick="showPage('home')">Tela Inicial</a></li>
-                 <li class="sidebar-menu-item"><a href="D:\Repos\web-teste.html" onclick="showPage('expenses')">Análise de Gastos</a></li>
-                 <li class="sidebar-menu-item"><a href="#">Configurações</a></li>
-             </ul>
-         </nav>
-     </aside>
-
-<main class="content" id="mainContent">
-    
-    <div id="reports-page" class="page-content hidden">
-        <div class="container">
-            <h1>Relatório dos Últimos 30 Dias</h1>
-            <div id="report-content">
-                <p>Gerando relatório...</p>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    &laquo;
+                </button>
             </div>
-        </div>
-    </div>
-    
-</main>
+            <nav>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item"><a href="#">Tela Inicial</a></li>
+                    <li class="sidebar-menu-item"><a href="..\Form\web-teste.html" >Análise de Gastos</a></li>
+                    <li class="sidebar-menu-item"><a href="..\Config\config.html">Configurações</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content" id="mainContent">
+
+            <div id="expenses-page" class="page-content">
+                <div class="container">
+                    <h1>Tela Inicial</h1>
+                    <p>Aqui você pode ver o resumo dos seus gastos.</p>
+                </div>
+            </div>
+
+            <div id="reports-page" class="page-content hidden">
+                <div class="container">
+                    <h1>Relatório dos Últimos 30 Dias</h1>
+                    
+                    <div class="search-section">
+                        <input type="text" id="searchInput" placeholder="Buscar por descrição...">
+                        <button id="searchButton">Buscar</button>
+                    </div>
+                    <div id="report-content">
+                        <p>Gerando relatório...</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
 
     </div>
 
-    <script src="expenseReport.js"></script>
+    <script src="..\Relatorios\expenseReport.js"></script>
 </body>
 </html>

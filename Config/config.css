@@ -7,6 +7,23 @@
     --border-color: #e2e6ea;
     --text-color: #343a40;
     --light-text-color: #a0a0a0;
+    --btn-color: #ffffff; /* Cor padrão para texto de botão */
+    --btn-bg: #007bff; /* Cor padrão para fundo de botão */
+    --btn-bg-hover: #0056b3; /* Cor padrão para hover de botão */
+}
+
+/* Modo Noturno: Sobrescreve as variáveis do tema claro */
+.dark-mode {
+    --primary-color: #6a11cb;
+    --secondary-color: #e0e0e0;
+    --background-color: #121212;
+    --surface-color: #2c2c2c;
+    --border-color: #444444;
+    --text-color: #e0e0e0;
+    --light-text-color: #a0a0a0;
+    --btn-color: #ffffff;
+    --btn-bg: linear-gradient(90deg, #6a11cb, #2575fc);
+    --btn-bg-hover: linear-gradient(90deg, #5c0aa8, #1e64e0);
 }
 
 /* -- Estilos Globais -- */
@@ -16,6 +33,7 @@ body {
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .hidden {
@@ -92,12 +110,24 @@ h1 {
     padding: 1rem;
     text-decoration: none;
     color: var(--text-color);
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, opacity 0.3s ease;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .sidebar-menu-item a:hover {
     background-color: var(--border-color);
+}
+
+.sidebar.minimized .sidebar-menu-item a {
+    opacity: 0;
+    width: 0;
+    padding: 0;
+}
+
+.sidebar.minimized .sidebar-menu-item {
+    text-align: center;
 }
 
 /* -- Conteúdo da Página -- */
@@ -110,7 +140,91 @@ h1 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* -- Formulário de Adicionar Gastos -- */
+/* -- Estilo para o Interruptor de Alternância -- */
+/* IMPORTANTE: Este bloco foi movido para fora da @media query */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--secondary-color);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Arredonda o interruptor */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* -- Seção de Busca (para a página de Relatórios) -- */
+.search-section {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+#searchInput {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+#searchButton {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+#searchButton:hover {
+    background-color: var(--btn-bg-hover);
+}
+
+/* -- Formulário de Adicionar Gastos (para a página de Análise) -- */
 .input-group {
     margin-bottom: 1rem;
 }
@@ -127,13 +241,13 @@ h1 {
     border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 1rem;
-    box-sizing: border-box; /* Garante que o padding não adicione largura */
+    box-sizing: border-box;
 }
 
 button {
     padding: 0.75rem 1.5rem;
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -142,7 +256,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: var(--btn-bg-hover);
 }
 
 /* -- Lista de Gastos -- */
@@ -198,23 +312,15 @@ button:hover {
     color: var(--primary-color);
 }
 
-.sidebar-menu-item a {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Adiciona '...' se o texto for muito longo */
+/* Estilos da página de configurações */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* Esconde o texto quando o painel está minimizado */
-.sidebar.minimized .sidebar-menu-item a {
-    opacity: 0;
-    width: 0;
-    padding: 0;
-}
-
-/* Oculta os links que não têm texto, deixando apenas o ícone */
-.sidebar.minimized .sidebar-menu-item {
-    text-align: center;
-}
 /* -- Responsividade -- */
 @media (max-width: 768px) {
     .page-container {

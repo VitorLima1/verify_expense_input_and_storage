@@ -1,168 +1,94 @@
-// Função para alternar entre as páginas
-function showPage(pageId) {
-    const pages = document.querySelectorAll('.page-content');
-    pages.forEach(page => {
-        page.classList.add('hidden');
-    });
-    document.getElementById(pageId + '-page').classList.remove('hidden');
+// Aguarda o HTML ser completamente carregado antes de executar o cÃ³digo JavaScript
+document.addEventListener('DOMContentLoaded', () => {
 
-    if (pageId === 'reports') {
-        generateReport();
-    }
-}
-
-window.onload = function () {
-    showPage('expenses');
-    loadExpenses();
-};
-
-// Função para gerar o relatório dos últimos 30 dias
-function generateReport() {
-    const reportContent = document.getElementById('report-content');
-    reportContent.innerHTML = '';
-
-    const today = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(today.getDate() - 30);
-
-    const storedExpenses = localStorage.getItem('myExpensesApp');
-    const expenses = storedExpenses ? JSON.parse(storedExpenses) : [];
-
-    const recentExpenses = expenses.filter(expense => {
-        if (!expense.id) {
-            return false;
-        }
-        const expenseDate = new Date(expense.id);
-        return expenseDate >= thirtyDaysAgo;
-    });
-
-    const expensesByDate = new Map();
-    recentExpenses.forEach(expense => {
-        const date = new Date(expense.id).toLocaleDateString('pt-BR');
-        if (!expensesByDate.has(date)) {
-            expensesByDate.set(date, []);
-        }
-        expensesByDate.get(date).push(expense);
-    });
-
-    if (expensesByDate.size === 0) {
-        reportContent.innerHTML = '<p>Nenhum gasto registrado nos últimos 30 dias.</p>';
-        return;
-    }
-
-    expensesByDate.forEach((dailyExpenses, date) => {
-        const dayContainer = document.createElement('div');
-        dayContainer.classList.add('report-day');
-
-        const totalDay = dailyExpenses.reduce((sum, item) => sum + item.amount, 0);
-
-        const dayTitle = document.createElement('h3');
-        dayTitle.textContent = `Gastos em ${date}`;
-
-        const listContainer = document.createElement('div');
-        dailyExpenses.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('report-day-item');
-            itemElement.innerHTML = `
-                <span>${item.description}</span>
-                <span>R$ ${item.amount.toFixed(2)}</span>
-            `;
-            listContainer.appendChild(itemElement);
+    // FunÃ§Ãµes para alternar entre as pÃ¡ginas
+    function showPage(pageId) {
+        const pages = document.querySelectorAll('.page-content');
+        pages.forEach(page => {
+            page.classList.add('hidden');
         });
+        document.getElementById(pageId + '-page').classList.remove('hidden');
 
-        const totalElement = document.createElement('div');
-        totalElement.classList.add('report-day-total');
-        totalElement.textContent = `Total do dia: R$ ${totalDay.toFixed(2)}`;
-
-        dayContainer.appendChild(dayTitle);
-        dayContainer.appendChild(listContainer);
-        dayContainer.appendChild(totalElement);
-        reportContent.appendChild(dayContainer);
-    });
-}
-
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('mainContent');
-    sidebar.classList.toggle('minimized');
-    mainContent.classList.toggle('minimized');
-}
-
-let expenses = [];
-
-function loadExpenses() {
-    const storedExpenses = localStorage.getItem('myExpensesApp');
-    if (storedExpenses) {
-        expenses = JSON.parse(storedExpenses);
-    }
-    renderExpenses();
-    updateTotal();
-}
-
-function saveExpenses() {
-    localStorage.setItem('myExpensesApp', JSON.stringify(expenses));
-}
-
-function addExpense() {
-    const descriptionInput = document.getElementById('description');
-    const amountInput = document.getElementById('amount');
-
-    const description = descriptionInput.value.trim();
-    const amount = parseFloat(amountInput.value);
-
-    if (description === '' || isNaN(amount) || amount <= 0) {
-        alert('Por favor, insira uma descrição válida e um valor positivo.');
-        return;
+        if (pageId === 'reports') {
+            fetchExpensesAndRender();
+        }
     }
 
-    expenses.push({
-        id: Date.now(),
-        description: description,
-        amount: amount
-    });
+    // FunÃ§Ãµes para o Banco de Dados (MongoDB)
+    async function fetchExpensesAndRender(searchTerm = '') {
+        try {
+            let url = 'http://localhost:3000/api/expenses';
+            if (searchTerm) {
+                url += `?search=${encodeURIComponent(searchTerm)}`;
+            }
 
-    descriptionInput.value = '';
-    amountInput.value = '';
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Erro ao carregar os gastos');
+            }
+            const expensesFromDB = await response.json();
+            
+            console.log('Dados recebidos do servidor:', expensesFromDB);
 
-    saveExpenses();
-    renderExpenses();
-    updateTotal();
-}
-
-function removeExpense(idToRemove) {
-    expenses = expenses.filter(expense => expense.id !== idToRemove);
-
-    saveExpenses();
-    renderExpenses();
-    updateTotal();
-}
-
-function renderExpenses() {
-    const expenseListDiv = document.getElementById('expenseList');
-    expenseListDiv.innerHTML = '<h2>Meus Gastos</h2>';
-
-    if (expenses.length === 0) {
-        const noExpenses = document.createElement('p');
-        noExpenses.textContent = 'Nenhum gasto registrado ainda.';
-        expenseListDiv.appendChild(noExpenses);
-        return;
+            renderExpenses(expensesFromDB);
+        } catch (error) {
+            console.error('Erro ao carregar gastos:', error);
+        }
     }
 
-    expenses.forEach((expense) => {
-        const expenseItem = document.createElement('div');
-        expenseItem.classList.add('expense-item');
+    // FunÃ§Ã£o de renderizaÃ§Ã£o ÃšNICA e CORRIGIDA
+    function renderExpenses(expensesToRender) {
+        const reportContent = document.getElementById('report-content');
+        reportContent.innerHTML = '';
 
-        expenseItem.innerHTML = `
-            <span>${expense.description}</span>
-            <span>R$ ${expense.amount.toFixed(2)}</span>
-            <button onclick="removeExpense(${expense.id})">Remover</button>
-        `;
-        expenseListDiv.appendChild(expenseItem);
+        if (!expensesToRender || expensesToRender.length === 0) {
+            reportContent.innerHTML = '<p>Nenhum gasto encontrado.</p>';
+            return;
+        }
+
+        expensesToRender.forEach(expense => {
+            const expenseItem = document.createElement('div');
+            expenseItem.classList.add('expense-item');
+
+            const description = document.createElement('p');
+            description.textContent = `DescriÃ§Ã£o: ${expense.description}`;
+
+            const value = document.createElement('p');
+            let formattedValue;
+            
+            if (typeof expense.value === 'number') {
+                formattedValue = expense.value.toFixed(2);
+            } else if (typeof expense.amount === 'number') {
+                formattedValue = expense.amount.toFixed(2);
+            } else {
+                formattedValue = '0.00';
+            }
+
+            value.textContent = `Valor: R$ ${formattedValue}`;
+
+            expenseItem.appendChild(description);
+            expenseItem.appendChild(value);
+            reportContent.appendChild(expenseItem);
+        });
+    }
+
+    // Evento de clique do botÃ£o de busca
+    document.getElementById('searchButton').addEventListener('click', () => {
+        const searchTerm = document.getElementById('searchInput').value;
+        fetchExpensesAndRender(searchTerm);
     });
-}
 
-function updateTotal() {
-    const totalAmountSpan = document.getElementById('totalAmount');
-    const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-    totalAmountSpan.textContent = total.toFixed(2);
-}
+    // Chamada inicial para carregar a pÃ¡gina de relatÃ³rios
+    showPage('reports');
+
+    // ... dentro de document.addEventListener('DOMContentLoaded', () => {
+
+
+});
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        sidebar.classList.toggle('minimized');
+        mainContent.classList.toggle('minimized');
+    }
