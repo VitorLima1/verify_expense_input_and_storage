@@ -24,7 +24,7 @@ A simple web application for managing personal expenses.
 * **HTML:** Page structure.
 * **CSS:** Styling and layout.
 * **JavaScript:** Application logic.
-* **LocalStorage:** Data storage in the browser.
+* **MongoDB:** Database in MongoDB
 
 ---
 

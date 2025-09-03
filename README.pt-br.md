@@ -24,7 +24,7 @@ Uma aplicação web simples para gerenciar gastos pessoais.
 * **HTML:** Estrutura da página.
 * **CSS:** Estilização e layout.
 * **JavaScript:** Lógica da aplicação.
-* **LocalStorage:** Armazenamento de dados no navegador.
+* **MongoDB:** Armazenamento de dados no MongoDB.
 
 ---
 
