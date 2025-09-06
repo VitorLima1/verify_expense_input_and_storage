@@ -22,8 +22,9 @@
     --text-color: #e0e0e0;
     --light-text-color: #a0a0a0;
     --btn-color: #ffffff;
-    --btn-bg: linear-gradient(90deg, #6a11cb, #2575fc);
+    --btn-bg: linear-gradient(90deg, #afafaf, #2575fc);
     --btn-bg-hover: linear-gradient(90deg, #5c0aa8, #1e64e0);
+    --btn-border: #444444; 
 }
 
 /* -- Estilos Globais -- */
@@ -244,20 +245,7 @@ input:checked + .slider:before {
     box-sizing: border-box;
 }
 
-button {
-    padding: 0.75rem 1.5rem;
-    background-color: var(--btn-bg);
-    color: var(--btn-color);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
-}
 
-button:hover {
-    background-color: var(--btn-bg-hover);
-}
 
 /* -- Lista de Gastos -- */
 .expense-list {
@@ -319,6 +307,29 @@ button:hover {
     align-items: center;
     padding: 1rem 0;
     border-bottom: 1px solid var(--border-color);
+}
+
+/* -- Estilo Básico para TODOS os botões -- */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* -- Estilo para o Botão Primário -- */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    box-shadow: var(--btn-shadow, none);
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-bg-hover);
+    transform: scale(1.05); /* Aumenta o tamanho em 5% */
 }
 
 /* -- Responsividade -- */
